@@ -1,0 +1,40 @@
+{
+  "variables": {
+    "aws_access_key": "",
+    "aws_secret_key": ""
+   
+  },
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "region": "us-east-1",
+      "source_ami_filter": {
+        "filters": {
+          "virtualization-type": "hvm",
+          "name": "",
+          "root-device-type": "ebs"
+        },
+        "owners": ["amazon"],
+        "most_recent": true
+      },
+      "instance_type": "t2.micro",
+      "ssh_username": "ec2-user",
+      "ami_name": "Amzn-golden-AMI-tomcat9",
+      "associate_public_ip_address": true,
+      "tags": {
+        "Name": "Amzn-golden-AMI-tomcat9"
+      }
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "tomcat.service",
+      "destination": "/tmp/"
+    },
+    {
+      "type": "shell",
+      "script":"provision-tomcat9.sh"
+    }
+  ]
+}
