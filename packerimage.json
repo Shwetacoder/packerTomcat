@@ -1,40 +1,29 @@
 {
-  "variables": {
-    "aws_access_key": "",
-    "aws_secret_key": ""
-   
-  },
-  "builders": [
-    {
-      "type": "amazon-ebs",
-      "region": "us-east-1",
-      "source_ami_filter": {
-        "filters": {
-          "virtualization-type": "hvm",
-          "name": "",
-          "root-device-type": "ebs"
-        },
-        "owners": ["amazon"],
-        "most_recent": true
-      },
-      "instance_type": "t2.micro",
-      "ssh_username": "ec2-user",
-      "ami_name": "Amzn-golden-AMI-tomcat9",
-      "associate_public_ip_address": true,
-      "tags": {
-        "Name": "Amzn-golden-AMI-tomcat9"
-      }
-    }
-  ],
-  "provisioners": [
-    {
-      "type": "file",
-      "source": "tomcat.service",
-      "destination": "/tmp/"
-    },
-    {
-      "type": "shell",
-      "script":"provision-tomcat9.sh"
-    }
-  ]
+
+ "variables": {
+ "aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
+ "aws_secret_key": "{{env `AWS_SECRET_ACCESS_KEY`}}"
+ },
+
+ "builders": [{
+   "type": "amazon-ebs",
+   "communicator": "ssh",
+   "ssh_pty": "true",
+   "access_key": "{{user `aws_access_key`}}",
+   "secret_key": "{{user `aws_secret_key`}}",
+   "region": "us-west-1",
+   "source_ami": "ami-06542a822d33e2e40",
+   "instance_type": "t2.micro",
+   "ssh_username": "ec2-user",
+   "ami_name": "packkerwithapache {{timestamp}}"
+ }],
+"provisioners": [{
+   "type": "shell",
+   "inline":[
+           "sudo yum install tomcat9",
+           "sudo tomcatctl start"
+   ]
+   }
+]
+
 }
