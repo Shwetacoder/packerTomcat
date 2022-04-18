@@ -17,11 +17,15 @@
    "ssh_username": "ec2-user",
    "ami_name": "packkerwithtomcat {{timestamp}}"
  }],
-"provisioners": [{
-   "type": "shell",
-   "inline":
-           "sudo yum install -y java-1.8.0-openjdk",
-            
-                }]
-                
- }
+"provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "sudo yum install -y java-1.8.0-openjdk",
+        "sudo yum install -y tomcat",
+        "sudo chkconfig tomcat on",
+        "sudo service tomcat start"
+      ]
+    }
+  ]
+}
