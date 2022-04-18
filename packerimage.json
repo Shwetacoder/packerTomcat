@@ -15,13 +15,12 @@
    "source_ami": "ami-06542a822d33e2e40",
    "instance_type": "t2.micro",
    "ssh_username": "ec2-user",
-   "ami_name": "packkerwithapache {{timestamp}}"
+   "ami_name": "packkerwithtomcat {{timestamp}}"
  }],
 "provisioners": [{
    "type": "shell",
    "inline":[
-           "sudo yum install tomcat9",
-           "sudo tomcatctl start"
+           "sudo yum install -y java-1.8.0-openjdk",
    ]
    }
 ]
